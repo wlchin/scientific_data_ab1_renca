@@ -1,0 +1,57 @@
+from snakemake.remote.HTTP import RemoteProvider as HTTPRemoteProvider
+
+HTTP = HTTPRemoteProvider()
+
+rule all:
+    input:
+        "results/ab1_combined_tumour_identified.rds",
+
+rule get_data:
+    input:
+        HTTP.remote("http://cloudstor.aarnet.edu.au/plus/s/3TO4AnZ2eF6rGU2/download", keep_local=True)
+    output:
+        "data/dat.tar.gz"
+    run:
+        shell("mv {input} dat.tar.gz; mv dat.tar.gz data/")
+
+rule extract_data:
+    input:
+        "data/dat.tar.gz"
+    output:
+        "data/ab1_combined.rds",
+        "data/ab1_tagged_combined.rds"
+    shell:
+        "tar -xvzf data/dat.tar.gz -C data/"
+
+rule single_r_label:
+    input:
+        "data/ab1_combined.rds"
+    output:
+        "results/single_r_labels.rds"
+    singularity:
+        "docker://wlc27/singler_legacy:v2"
+    script:
+        "scripts/singler_labelling.R"
+
+rule tumour_predictions:
+    input:
+        "data/ab1_combined.rds",
+        "data/ab1_tagged_combined.rds"
+    output:
+        "results/metadata_predictions.rds"
+    singularity:
+        "docker://wlc27/singler_legacy:v2"
+    script:
+        "scripts/label_transfer.R"
+
+rule combine_labels_from_metadata:
+    input:
+        "data/ab1_combined.rds",
+        "results/single_r_labels.rds",
+        "results/metadata_predictions.rds"
+    output:
+        "results/ab1_combined_tumour_identified.rds",
+    singularity:
+        "docker://wlc27/singler_legacy:v2"
+    script:
+        "scripts/process_metadata.R"
