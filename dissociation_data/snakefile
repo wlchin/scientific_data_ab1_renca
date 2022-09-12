@@ -1,0 +1,41 @@
+configfile: "config.yaml"
+
+from snakemake.remote.HTTP import RemoteProvider as HTTPRemoteProvider
+
+HTTP = HTTPRemoteProvider()
+
+rule all:
+    input:
+        "results/count_matrix.rds",
+
+rule get_data:
+    input:
+        HTTP.remote("https://cloudstor.aarnet.edu.au/plus/s/qprGE7Q1fv0PSe7/download", keep_local=True)
+    output:
+        "data/dat.tar.gz"
+    run:
+        shell("mv {input} dat.tar.gz; mv dat.tar.gz data/")
+
+rule extract_data:
+    input:
+        "data/dat.tar.gz"
+    output:
+        expand('data/kallisto/quant_results_{exp}/abundance.tsv', exp = config["IDS"])
+    shell:
+        "tar -xvzf data/dat.tar.gz -C data/"
+
+rule DE_analysis_with_transcript_aggregation:
+    input:
+        expand('data/kallisto/quant_results_{exp}/abundance.tsv', exp = config["IDS"])
+    output:
+        "results/diss_DE_list_up.txt",
+        "results/diss_DE_list_down.txt",
+        "results/pheno_pca.jpeg",
+        "results/diss_gene_table.rds",
+        "results/diss_sleuth_object.rds",
+        "results/diss_phenodata.rds",
+        "results/count_matrix.rds"
+    singularity:
+        "docker://bleekerlab/rnaseq-analysis-kallisto-sleuth:latest"
+    script:
+        "scripts/sleuth_DE_diss.R"
