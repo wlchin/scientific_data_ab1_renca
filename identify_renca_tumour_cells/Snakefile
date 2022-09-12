@@ -1,0 +1,59 @@
+from snakemake.remote.HTTP import RemoteProvider as HTTPRemoteProvider
+
+HTTP = HTTPRemoteProvider()
+
+rule all:
+    input:
+        "results/renca_combined_tumour_identified.rds",
+
+rule get_data:
+    input:
+        HTTP.remote("https://cloudstor.aarnet.edu.au/plus/s/ezqbWB4MQ32c2lb/download", keep_local=True)
+    output:
+        "data/dat.tar.gz"
+    run:
+        shell("mv {input} dat.tar.gz; mv dat.tar.gz data/")
+
+rule extract_data:
+    input:
+        "data/dat.tar.gz"
+    output:
+        "data/renca_combined.rds",
+        "data/Park.rds"
+    shell:
+        "tar -xvzf data/dat.tar.gz -C data/"
+
+rule single_r_label:
+    input:
+        "data/renca_combined.rds"
+    output:
+        "results/single_r_labels.rds"
+    singularity:
+        "docker://wlc27/singler_legacy:v2"
+    script:
+        "scripts/singler_labelling.R"
+
+rule tumour_predictions:
+    input:
+        "data/renca_combined.rds",
+        "data/Park.rds"
+    output:
+        "results/metadata_predictions.rds"
+    singularity:
+        "docker://wlc27/singler_legacy:v2"
+    script:
+        "scripts/detect_PCT_clusters.R"
+
+rule analyse_metadata:
+    input:
+        "data/renca_combined.rds",
+        "results/single_r_labels.rds",
+        "results/metadata_predictions.rds"
+    output:
+        "results/renca_combined_tumour_identified.rds",
+    singularity:
+        "docker://wlc27/singler_legacy:v2"
+    script:
+        "scripts/process_metadata_renca.R"
+
+
