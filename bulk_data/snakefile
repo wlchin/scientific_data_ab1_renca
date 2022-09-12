@@ -1,0 +1,39 @@
+from snakemake.remote.HTTP import RemoteProvider as HTTPRemoteProvider
+
+HTTP = HTTPRemoteProvider()
+
+rule all:
+    input:
+        "results/ab1_pca_res.png",
+        "results/renca_pca_res.png"
+
+rule get_data:
+    input:
+        HTTP.remote("http://cloudstor.aarnet.edu.au/plus/s/ee1mwmStYn0oMPq/download", keep_local=True)
+    output:
+        "data/ab1_sleuth_object.rds",
+        "data/renca_sleuth_object.rds"
+    run:
+        outputName = "bulk_data.tar.gz"
+        destName = "bulk_data"
+        shell("mv {input} {outputName}; tar -xzvf {outputName}")
+
+rule extract_pca_coords:
+    input:
+        "data/{sample}_sleuth_object.rds"
+    output:
+        "results/{sample}_pca_tpm.csv"
+    singularity:
+        "docker://bleekerlab/rnaseq-analysis-kallisto-sleuth:latest"
+    script:
+        "scripts/get_PCA_coordinates_from_sleuth.R"
+
+rule visualise_pca:
+    input:
+        "results/{sample}_pca_tpm.csv"
+    output:
+        "results/{sample}_pca_res.png",
+    singularity:
+        "docker://fastgenomics/scanpy:1.4-p368-v1-stretch-slim"
+    script:
+        "scripts/PCA_visuals.py"
