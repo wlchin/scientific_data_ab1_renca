@@ -12,6 +12,6 @@ Raw data preprocessing (alignment and QC) is not performed in this workflow, alt
 
 Instead, the workflow leverages preprocessed data downstream of these two steps, downloading intermediate files from Cloudstor. 
 
-To reproduce these workflows from scratch (raw sequencing files), please download raw from the GEO repository [GSE153943](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE153942).
+To reproduce these workflows from scratch (raw sequencing files), please download raw files from the GEO repository [GSE153943](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE153942).
 
 
