@@ -22,6 +22,10 @@ so <- sleuth_fit(so)
 oe <- sleuth_wt(so, which_beta = "phenoSingleCell")
 sleuth_results_oe <- sleuth_results(oe, test = "phenoSingleCell", show_all = TRUE)
 
+#internally, 0s and 1s in alphabetical order 
+#positive beta values showing transcripts in which expression is greater in condition 1 than in condition 0.
+# single cell = 1, bulk = 0
+
 filt <- sleuth_results_oe[sleuth_results_oe$qval < 0.05 & sleuth_results_oe$b > 1,]
 write(unique(filt$gene_name), file = snakemake@output[[1]])
 
