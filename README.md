@@ -8,7 +8,7 @@ These workflows further describe the datasets used in [this repository](https://
 
 # Notes
 
-Raw data preprocessing (alignment and QC) is not performed in this workflow, although the code to reproduce the alignement steps is available as individual subworkflows. [MutliQC html reports](https://multiqc.info/) describing QC metrics are provided for bulk RNA-seq data and cellranger per-sample diagnostics for single cell data are provided in this repo. 
+Raw data preprocessing (alignment and QC) is not performed in this workflow, although the code to reproduce the alignement steps is available as individual subworkflows. [MutliQC html reports](https://multiqc.info/) describing QC metrics are provided for bulk RNA-seq data and [cellranger](https://support.10xgenomics.com/single-cell-gene-expression/software/pipelines/latest/what-is-cell-ranger) per-sample diagnostics for single cell data are provided in this repo. 
 
 Instead, the workflow leverages preprocessed data downstream of these two steps, downloading intermediate files from Cloudstor. 
 
