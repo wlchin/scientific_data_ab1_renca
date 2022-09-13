@@ -1,0 +1,62 @@
+from snakemake.remote.HTTP import RemoteProvider as HTTPRemoteProvider
+
+HTTP = HTTPRemoteProvider()
+
+rule all:
+    input:
+        "figures/ab1_cell_proportions.png",
+        "figures/renca_cell_proportions.png",
+        "results/single_cell_cellranger_diagnostics.csv"
+
+rule get_data:
+    input:
+        HTTP.remote("https://cloudstor.aarnet.edu.au/plus/s/HvftVXNY2w8dO0x/download", keep_local=True)
+    output:
+        "data/dat.tar.gz"
+    run:
+        shell("mv {input} dat.tar.gz; mv dat.tar.gz data/")
+
+rule extract_data:
+    input:
+        "data/dat.tar.gz"
+    output:
+        "data/ab1.h5ad",
+        "data/renca.h5ad"
+    shell:
+        "tar -xvzf data/dat.tar.gz -C data/"
+
+rule combine_metrics_into_table:
+    output:
+        "results/single_cell_cellranger_diagnostics.csv"
+    singularity:
+        "docker://wollmilchsau/scanpy_sccoda:latest"
+    script:
+        "scripts/metrics_for_singlecell.py"
+
+rule visualise_ab1:
+    input:
+        "data/ab1.h5ad"
+    output:
+        "figures/umapab1.png",
+        "figures/umapab1_cellcomp.png",
+        "figures/umapab1cluster.png",
+        "figures/umapab1sample.png",
+        "figures/ab1_cell_proportions.png"
+    singularity:
+        "docker://wollmilchsau/scanpy_sccoda:latest"
+    script:
+        "scripts/visuals_ab1.py"
+
+rule visualise_renca:
+    input:
+        "data/renca.h5ad"
+    output:
+        "figures/umaprenca.png",
+        "figures/umaprenca_cellcomp.png",
+        "figures/umaprencacluster.png",
+        "figures/umaprencasample.png",
+        "figures/renca_cell_proportions.png"
+    singularity:
+        "docker://wollmilchsau/scanpy_sccoda:latest"
+    script:
+        "scripts/visuals_renca.py"
