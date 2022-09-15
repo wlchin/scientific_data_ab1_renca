@@ -42,14 +42,17 @@ for row in range(rows):
         ax.set_axisbelow(True)
 
         ax.set_xlim(-max_lims, max_lims)
-        ax.xaxis.set_major_locator(ticker.MultipleLocator(1000))
-        ax.xaxis.set_minor_locator(ticker.MultipleLocator(100))
-        ax.set_xticklabels([])
+        ax.xaxis.set_major_locator(ticker.MultipleLocator(5000))
+        ax.xaxis.set_minor_locator(ticker.MultipleLocator(1000))
+
 
         ax.set_ylim(-max_lims, max_lims)
-        ax.yaxis.set_major_locator(ticker.MultipleLocator(1000))
-        ax.yaxis.set_minor_locator(ticker.MultipleLocator(100))
-        ax.set_yticklabels([])
+        ax.yaxis.set_major_locator(ticker.MultipleLocator(5000))
+        ax.yaxis.set_minor_locator(ticker.MultipleLocator(1000))
+        
+        ax.tick_params(axis='both', which='major', labelsize=10)
+        ax.tick_params(axis='both', which='minor', labelsize=10)
+        plt.xticks(rotation = 90)
 
         ax.grid(color=".9", linestyle="--")
 
