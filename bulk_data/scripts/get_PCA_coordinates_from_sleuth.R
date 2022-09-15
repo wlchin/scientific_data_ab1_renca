@@ -65,5 +65,22 @@ spread_abundance_by <- function(abund, var, which_order) {
 }
 
 a <- readRDS(snakemake@input[[1]])
+
+ppv <- plot_pc_variance(a)
+PCpc <- ppv$data$var
+names(PCpc) <- paste0("PC", seq(1:length(PCpc)))
+print(PCpc)
+
+# AB1
+# PC1       PC2       PC3       PC4       PC5 
+#50.498620 23.479464  5.319671  4.634989  2.824438 
+
+# Renca
+# PC1       PC2       PC3       PC4       PC5 
+#49.370527 19.422378 11.411216  7.830100  2.237382
+
 df_res <- plot_pca(a, units = "tpm")
 write.csv(df_res, snakemake@output[[1]])
+
+
+
