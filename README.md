@@ -14,4 +14,6 @@ Instead, the workflow leverages preprocessed data downstream of these two steps,
 
 To reproduce these workflows from scratch (raw sequencing files), please download raw files from the GEO repository [GSE153943](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE153942).
 
+The workflows run on a linux machine. Where required, steps in the workflow are containerized. Therefore, invoke the --run-singularity flag when running snakemake. 
+
 
