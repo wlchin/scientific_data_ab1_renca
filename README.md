@@ -20,5 +20,5 @@ Label transfer is used to identify tumour cells. For the Renca (renal cell cance
 
 # References
 
-[^1] Park, J., Shrestha, R., Qiu, C., Kondo, A., Huang, S., Werth, M., Li, M., Barasch, J., & Suszták, K. (2018). Single-cell transcriptomics of the mouse kidney reveals potential cellular targets of kidney disease. Science (New York, N.Y.), 360(6390), 758–763. https://doi.org/10.1126/science.aar2131
+[^1]: Park, J., Shrestha, R., Qiu, C., Kondo, A., Huang, S., Werth, M., Li, M., Barasch, J., & Suszták, K. (2018). Single-cell transcriptomics of the mouse kidney reveals potential cellular targets of kidney disease. Science (New York, N.Y.), 360(6390), 758–763. https://doi.org/10.1126/science.aar2131
 
