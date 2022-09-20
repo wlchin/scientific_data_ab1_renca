@@ -16,4 +16,9 @@ To reproduce these workflows from scratch (raw sequencing files), please downloa
 
 The workflows run on a linux machine. Where required, steps in the workflow are containerized. Therefore, invoke the --run-singularity flag when running snakemake. 
 
+Label transfer is used to identify tumour cells. For the Renca (renal cell cancer dataset), the label transfer step uses external single cell data from Park et al. (2018) [^1]
+
+# References
+
+[^1] Park, J., Shrestha, R., Qiu, C., Kondo, A., Huang, S., Werth, M., Li, M., Barasch, J., & Suszták, K. (2018). Single-cell transcriptomics of the mouse kidney reveals potential cellular targets of kidney disease. Science (New York, N.Y.), 360(6390), 758–763. https://doi.org/10.1126/science.aar2131
 
