@@ -1,4 +1,5 @@
 library(data.table)
+library(sleuth)
 
 plot_pca <- function(obj,
   pc_x = 1L,
