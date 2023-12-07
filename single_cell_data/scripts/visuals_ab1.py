@@ -4,22 +4,22 @@ import matplotlib as mpl
 
 ab1 = sc.read(snakemake.input[0])
 
-sc.set_figure_params(fontsize = 15)
+sc.set_figure_params(fontsize = 15, dpi_save = 600)
 ab1.obs["hums"] = ab1.obs["analysis_ident"].astype("string")
 sc.pl.umap(ab1, color = ["hums"], legend_loc = None, title = "UMAP of all AB1 samples", save = "ab1.png")
 
-sc.set_figure_params(fontsize = 20, figsize = (6,6))
+sc.set_figure_params(fontsize = 20, figsize = (6,6), dpi_save = 600)
 sc.pl.umap(ab1, color = ["nCount_RNA", "nFeature_RNA", "percent.mt"], 
            title = ["RNA counts per cell", "Number of RNA features per cell", "% Mitochondrial genes per cell"], wspace = 0.3, save = "ab1_cellcomp.png")
 
 
 
-sc.set_figure_params(fontsize = 10)
+sc.set_figure_params(fontsize = 10, dpi_save = 600)
 ab1.obs["hums"] = ab1.obs["seurat_clusters"].astype("string")
 sc.pl.umap(ab1, color = ["hums"], legend_loc = "on data", title = "UMAP of all AB1 samples", save = "ab1cluster.png")
 
 
-sc.set_figure_params(fontsize = 15)
+sc.set_figure_params(fontsize = 15, dpi_save = 600)
 ab1.obs["hums"] = ab1.obs["sample"].astype("category")
 sc.pl.umap(ab1, color = ["hums"], 
            title = "UMAP of all AB1 samples", 
@@ -38,7 +38,7 @@ df_rel = df[df.columns[1:]].div(df_total, 0)*100
 df_rel["samples"] = df["sample"]
 df_rel.columns = df_rel.columns.astype("category")
 
-sc.set_figure_params(fontsize = 15, figsize = (10,6))
+sc.set_figure_params(fontsize = 15, figsize = (10,6), dpi_save = 600)
 ax = df_rel.plot(
     x = 'samples',
     kind = 'barh',
